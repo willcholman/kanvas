@@ -59,7 +59,6 @@
   /* rhythm */
   --pad:   clamp(20px, 5vw, 64px);
   --sec-y: clamp(88px, 12vw, 168px);
-  --gut:   180px;
 
   --ease: cubic-bezier(.22,.61,.36,1);
 }
@@ -123,27 +122,12 @@ a   { color: inherit; }
 
 .grid {
   display: grid;
-  grid-template-columns: var(--gut) minmax(0, 1fr) minmax(0, .74fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, .74fr);
   column-gap: clamp(24px, 4vw, 56px);
   align-items: start;
 }
-.grid > .eyebrow { grid-column: 1; grid-row: 1; }
-.grid > .col     { grid-column: 2; grid-row: 1; }
-.grid > .shot    { grid-column: 3; grid-row: 1; align-self: end; }
-
-/* eyebrow: a plain label in the margin, like the header on a training log */
-.eyebrow {
-  margin: .55em 0 0;
-  font: 500 .6875rem/1.2 var(--mono);
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--volt);
-  white-space: nowrap;
-}
-.eyebrow::before { content: ""; display: inline-block; width: 18px; height: 1px; background: var(--volt); vertical-align: middle; margin-right: 10px; }
-.eyebrow--block  { margin-bottom: 28px; }
-.eyebrow--dark   { color: var(--ink); }
-.eyebrow--dark::before { background: var(--ink); }
+.grid > .col  { grid-column: 1; grid-row: 1; }
+.grid > .shot { grid-column: 2; grid-row: 1; align-self: end; }
 
 /* ---------- 5. Type ------------------------------------------------------- */
 .statement {
@@ -233,9 +217,9 @@ a   { color: inherit; }
   border-bottom-color: var(--line-2);
   padding-block: 12px;
 }
-.nav__brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.nav__mark  { width: 24px; height: 24px; }
-.nav__word  { width: auto; height: 15px; }
+.nav__brand { display: flex; align-items: center; text-decoration: none; }
+.nav__word  { width: auto; height: 28px; transition: height .3s var(--ease); }
+.nav.is-stuck .nav__word { height: 24px; }
 .nav__cta   { padding: .8em 1.35em; font-size: .6875rem; }
 
 /* opening animation for the bar */
@@ -331,28 +315,16 @@ a   { color: inherit; }
   display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
 }
 
-.hero__cue {
-  position: absolute; right: var(--pad); bottom: clamp(40px, 7vh, 72px);
-  display: flex; align-items: center; gap: 12px;
-  font: 400 .625rem/1 var(--mono); letter-spacing: .22em; text-transform: uppercase;
-  color: var(--ash-dim);
-}
-.hero__cue i { display: block; width: 42px; height: 1px; background: var(--line); position: relative; overflow: hidden; }
-.hero__cue i::after {
-  content: ""; position: absolute; inset: 0; background: var(--volt);
-  animation: cueSlide 2.1s var(--ease) infinite;
-}
-@keyframes cueSlide { 0% { transform: translateX(-100%); } 60%,100% { transform: translateX(100%); } }
-
 /* ---------- 9. The problem ------------------------------------------------ */
 .sec--problem { border-top: 1px solid var(--line-2); }
 .sec--problem .statement { font-size: clamp(2.25rem, 5vw, 4.25rem); }
 
 /* the statement runs the full measure, then the argument and the evidence
    sit side by side beneath it */
-.sec--problem .col          { grid-column: 2 / 4; grid-row: 1; }
-.sec--problem .problem__body { grid-column: 2; grid-row: 2; }
-.sec--problem .shot         { grid-column: 3; grid-row: 2; align-self: start; }
+.sec--problem .col           { grid-column: 1 / 3; grid-row: 1; }
+.sec--problem .problem__body { grid-column: 1; grid-row: 2; }
+/* same top offset as the body copy so the two align under the statement */
+.sec--problem .shot          { grid-column: 2; grid-row: 2; align-self: start; margin-top: clamp(28px, 4vw, 44px); }
 
 .problem__body { margin-top: clamp(28px, 4vw, 44px); max-width: 40ch; }
 .problem__body p { margin: 0 0 1em; }
@@ -379,8 +351,8 @@ a   { color: inherit; }
 
 /* ---------- 10. Tale of the tape ------------------------------------------ */
 .sec--tape { padding-block: clamp(64px, 8vw, 110px); border-top: 1px solid var(--line-2); }
-.sec--tape .grid { grid-template-columns: var(--gut) minmax(0, 1fr); }
-.sec--tape .col  { grid-column: 2; }
+.sec--tape .grid { grid-template-columns: minmax(0, 1fr); }
+.sec--tape .col  { grid-column: 1; }
 
 .tape { margin: 0; }
 .tape__row {
@@ -411,8 +383,6 @@ a   { color: inherit; }
 /* ---------- 11. The app --------------------------------------------------- */
 .sec--product { border-top: 1px solid var(--line-2); overflow: clip; }
 .sec--product > .wrap:first-child { margin-bottom: clamp(48px, 8vw, 96px); }
-.sec--product .eyebrow--block { text-align: center; }
-.sec--product .eyebrow--block::before { display: none; }
 
 .product {
   display: grid;
@@ -720,9 +690,9 @@ a   { color: inherit; }
 
 /* ---------- 13. Versus ---------------------------------------------------- */
 .sec--versus .statement { font-size: clamp(2.25rem, 4.6vw, 3.85rem); }
-.sec--versus .col  { grid-column: 2; grid-row: 1; }
-.sec--versus .shot { grid-column: 3; grid-row: 1; align-self: end; }
-.sec--versus .vs   { grid-column: 2 / 4; grid-row: 2; }
+.sec--versus .col  { grid-column: 1; grid-row: 1; }
+.sec--versus .shot { grid-column: 2; grid-row: 1; align-self: end; }
+.sec--versus .vs   { grid-column: 1 / 3; grid-row: 2; }
 
 .vs {
   width: 100%;
@@ -757,14 +727,12 @@ a   { color: inherit; }
 }
 .signup__wrap {
   display: grid;
-  grid-template-columns: var(--gut) minmax(0, 1fr);
-  column-gap: clamp(24px, 4vw, 56px);
+  grid-template-columns: minmax(0, 1fr);
   row-gap: clamp(32px, 5vw, 48px);
 }
-.signup__wrap > .eyebrow { grid-column: 1; grid-row: 1; }
-.signup__lead  { grid-column: 2; grid-row: 1; }
-.form          { grid-column: 2; grid-row: 2; }
-.signup__store { grid-column: 2; grid-row: 3; }
+.signup__lead  { grid-column: 1; grid-row: 1; }
+.form          { grid-column: 1; grid-row: 2; }
+.signup__store { grid-column: 1; grid-row: 3; }
 
 .signup .statement { font-size: clamp(2.75rem, 8vw, 6rem); }
 .signup__p {
@@ -852,13 +820,10 @@ a   { color: inherit; }
 
 /* ---------- 17. Responsive ------------------------------------------------ */
 @media (max-width: 1080px) {
-  :root { --gut: 132px; }
-  .grid { grid-template-columns: var(--gut) minmax(0, 1fr) minmax(0, .6fr); }
+  .grid { grid-template-columns: minmax(0, 1fr) minmax(0, .6fr); }
 }
 
 @media (max-width: 900px) {
-  :root { --gut: 0px; }
-
   .grid, .sec--tape .grid, .signup__wrap {
     grid-template-columns: minmax(0, 1fr);
     row-gap: 22px;
@@ -874,7 +839,6 @@ a   { color: inherit; }
     align-self: auto;
   }
   .grid > .shot { margin-top: 12px; }
-  .eyebrow { margin-top: 0; }
 
   .product { grid-template-columns: minmax(0, 1fr); column-gap: 0; }
   .device-col {
@@ -891,7 +855,6 @@ a   { color: inherit; }
   .feats { margin-top: 4px; }
   .feat { min-height: 50vh; max-width: none; }
 
-  .hero__cue { display: none; }
   .hero__inner { padding-top: 108px; }
 
   .form__row { grid-template-columns: minmax(0, 1fr); }
@@ -913,6 +876,8 @@ a   { color: inherit; }
   .appstore { padding: .65em 1em .65em .9em; }
 
   .nav__cta { display: none; }
+  .nav__word { height: 22px; }
+  .nav.is-stuck .nav__word { height: 20px; }
 }
 
 /* ---------- 18. Motion preferences ---------------------------------------- */
@@ -930,6 +895,5 @@ a   { color: inherit; }
   .js-ready .nav { opacity: 1; transform: none; }
   .reveal { opacity: 1; transform: none; }
   .marquee__track { animation: none; }
-  .hero__cue i::after { animation: none; }
   .btn:hover { transform: none; }
 }
