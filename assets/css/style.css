@@ -362,18 +362,24 @@ a   { color: inherit; }
   border-bottom: 1px solid var(--line-2);
 }
 .tape__row:first-child { border-top: 1px solid var(--line-2); }
+/* set in the brand face rather than the data mono — these are headlines,
+   not readouts */
 .tape__k {
-  font: 400 .75rem/1.3 var(--mono);
-  letter-spacing: .16em; text-transform: uppercase;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(.875rem, .82rem + .2vw, 1rem);
+  line-height: 1.3;
+  letter-spacing: .1em;
+  text-transform: uppercase;
   color: var(--ash);
 }
 .tape__v {
   margin: 0;
-  font-family: var(--mono);
-  font-weight: 700;
-  font-size: clamp(1.75rem, 4.2vw, 3.25rem);
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: clamp(2rem, 5vw, 4rem);
   line-height: .9;
-  letter-spacing: -.04em;
+  letter-spacing: -.045em;
   font-variant-numeric: tabular-nums;
 }
 .tape__v span { color: var(--ash-dim); }
@@ -676,6 +682,9 @@ a   { color: inherit; }
   padding: clamp(16px, 2vw, 24px) 0;
   overflow: hidden;
   white-space: nowrap;
+  /* the sign-up block below is also yellow — this keeps the ticker reading
+     as its own band rather than dissolving into it */
+  border-bottom: 2px solid var(--ink);
 }
 /* four identical sets; the loop resets after two, so the strip stays filled
    on displays wider than a single set */
@@ -688,39 +697,7 @@ a   { color: inherit; }
 .marquee__set b { color: rgba(10,10,10,.32); padding: 0 .18em; }
 @keyframes slide { to { transform: translateX(-50%); } }
 
-/* ---------- 13. Versus ---------------------------------------------------- */
-.sec--versus .statement { font-size: clamp(2.25rem, 4.6vw, 3.85rem); }
-.sec--versus .col  { grid-column: 1; grid-row: 1; }
-.sec--versus .shot { grid-column: 2; grid-row: 1; align-self: end; }
-.sec--versus .vs   { grid-column: 1 / 3; grid-row: 2; }
-
-.vs {
-  width: 100%;
-  margin-top: clamp(40px, 5vw, 64px);
-  border-collapse: collapse;
-  font-size: .9375rem;
-}
-.vs th, .vs td { padding: 1.05em .6em; text-align: center; border-bottom: 1px solid var(--line-2); }
-.vs thead th { border-bottom-color: var(--line); }
-.vs thead th {
-  font: 500 .625rem/1 var(--mono); letter-spacing: .16em; text-transform: uppercase;
-  color: var(--ash-dim); font-weight: 500; padding-top: 0;
-}
-.vs tbody th {
-  text-align: left; font-weight: 400; color: var(--paper);
-  padding-left: 0; font-size: .9375rem;
-}
-.vs__me { background: rgba(255,252,0,.055); }
-.vs thead .vs__me { color: var(--volt); font-weight: 700; }
-.vs tbody tr:last-child th, .vs tbody tr:last-child td { border-bottom: 0; }
-
-.mark { font: 700 .6875rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
-.mark--no  { color: var(--ash-dim); }
-.mark--no::before  { content: "—"; display: block; font-size: 1.3em; margin-bottom: .1em; }
-.mark--yes { color: var(--volt); }
-.mark--yes::before { content: "✓"; display: block; font-size: 1.5em; line-height: 1; margin-bottom: .05em; }
-
-/* ---------- 14. Sign-up --------------------------------------------------- */
+/* ---------- 13. Sign-up --------------------------------------------------- */
 .signup {
   background: var(--volt); color: var(--ink);
   padding-block: clamp(72px, 11vw, 140px);
@@ -830,7 +807,6 @@ a   { color: inherit; }
   }
   /* every section collapses to a single column, in source order */
   .sec--problem .grid > *,
-  .sec--versus  .grid > *,
   .sec--tape    .grid > *,
   .grid > *,
   .signup__wrap > * {
@@ -866,10 +842,6 @@ a   { color: inherit; }
 @media (max-width: 620px) {
   .tape__row { flex-direction: column; align-items: flex-start; gap: 6px; }
   .tape__v { font-size: clamp(2rem, 12vw, 2.75rem); }
-
-  .vs { font-size: .8125rem; display: block; overflow-x: auto; white-space: nowrap; }
-  .vs th, .vs td { padding: .9em .5em; }
-  .vs tbody th { white-space: normal; min-width: 11rem; }
 
   .hero__actions { gap: 10px; }
   .btn { padding: 1em 1.5em; }
