@@ -1,0 +1,11 @@
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Licensed fonts — Tenon is not redistributable, keep it out of the repo.
+# See README.md for the filenames to drop into assets/fonts/ locally.
+assets/fonts/*.woff2
+assets/fonts/*.woff
+assets/fonts/*.otf
+assets/fonts/*.ttf
