@@ -714,10 +714,11 @@ a   { color: inherit; }
 .signup .statement { font-size: clamp(2.75rem, 8vw, 6rem); }
 .signup__p {
   margin: .7em 0 0;
-  max-width: 32ch;
+  max-width: 38ch;
   font-size: clamp(1.0625rem, 1rem + .4vw, 1.3125rem);
   font-weight: 500;
   color: rgba(10,10,10,.72);
+  text-wrap: balance;
 }
 
 .form__row {
@@ -768,7 +769,6 @@ a   { color: inherit; }
   color: var(--ink);
 }
 .form__msg.is-error { color: #8a0018; }
-.form__fine { margin: 10px 0 0; font-size: .8125rem; color: rgba(10,10,10,.58); }
 
 .signup__store {
   display: flex; align-items: center; gap: .6em;
