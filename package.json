@@ -1,0 +1,46 @@
+{
+  "name": "kanvas-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "build:map": "tsx scripts/build-gym-map.ts",
+    "build:brand": "tsx scripts/build-brand-assets.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.3",
+    "@vercel/analytics": "^2.0.1",
+    "motion": "^14.2.0",
+    "next": "^16.4.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "resend": "^6.33.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/d3-geo": "^3.1.1",
+    "@types/geojson": "^7946.0.16",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/topojson-client": "^3.1.5",
+    "@types/topojson-specification": "^1.0.5",
+    "d3-geo": "^3.1.1",
+    "fflate": "^0.8.3",
+    "potrace": "^2.1.8",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
+    "topojson-client": "^3.1.0",
+    "tsx": "^4.23.15",
+    "typescript": "5.9",
+    "us-atlas": "^3.0.1",
+    "xlsx": "^0.18.5"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}
