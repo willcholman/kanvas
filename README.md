@@ -33,6 +33,7 @@ Other scripts:
 | FAQ | `src/content/faq.ts` |
 | Rotating disciplines (hero and form options) | `DISCIPLINES` in `src/content/site.ts` |
 | Site title, description, email, Instagram | `SITE` in `src/content/site.ts` |
+| Site URL (canonical, sitemap, share image, email logo) | Automatic: Vercel's production domain. Set `NEXT_PUBLIC_SITE_URL` in Vercel to override. |
 | Feature cards | `FEATURES` in `src/components/home/Features.tsx` |
 | Privacy and Terms (currently drafts) | `src/app/privacy/page.tsx`, `src/app/terms/page.tsx` |
 | Confirmation email | `src/lib/email.ts` (replace `[Kanvas LLC mailing address]` before launch, it is required by CAN-SPAM) |

@@ -3,6 +3,9 @@ import { SITE } from "@/content/site";
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
+/** Where the visitor signed up, e.g. "kanvasfit.com". */
+const SITE_HOST = new URL(SITE.url).host;
+
 const FONT = `'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif`;
 
 /** Mailing address shown in every email (CAN-SPAM). Replace before launch. */
@@ -20,7 +23,7 @@ Until then, follow along on Instagram: ${SITE.instagram.url}
 
 The Kanvas team
 
-You're getting this because you joined the Kanvas waitlist at kanvasfit.com. To unsubscribe, reply with "unsubscribe" or email ${SITE.email}.
+You're getting this because you joined the Kanvas waitlist at ${SITE_HOST}. To unsubscribe, reply with "unsubscribe" or email ${SITE.email}.
 ${MAILING_ADDRESS}`;
 
   const html = `<!doctype html>
@@ -65,7 +68,7 @@ ${MAILING_ADDRESS}`;
         </tr>
         <tr>
           <td style="border-top:1px solid #e6e6e3;padding-top:24px;font-family:${FONT};font-size:13px;line-height:1.6;color:#6b6b6b;">
-            You're getting this because you joined the Kanvas waitlist at kanvasfit.com.
+            You're getting this because you joined the Kanvas waitlist at ${SITE_HOST}.
             To unsubscribe, reply with "unsubscribe" or email <a href="mailto:${SITE.email}?subject=Unsubscribe" style="color:#6b6b6b;">${SITE.email}</a>.<br>
             ${esc(MAILING_ADDRESS)}
           </td>
