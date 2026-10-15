@@ -109,9 +109,9 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
       delay[i] = (x / maxX) * 900 + (c ? 120 : 0);
     });
 
-    // Only the densest ~3% of filled cells glow.
+    // Only the densest ~4% of filled cells glow.
     const filled = data.cells.filter((c) => c[2] > 0).map((c) => c[2]).sort((a, b) => a - b);
-    const threshold = filled[Math.floor(filled.length * 0.97)] ?? Infinity;
+    const threshold = filled[Math.floor(filled.length * 0.96)] ?? Infinity;
     const glowCells = data.cells.filter((c) => c[2] >= threshold);
 
     let k = 1; // CSS px per map unit
@@ -130,14 +130,34 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
       g.setTransform(k * dpr, 0, 0, k * dpr, 0, 0);
       g.globalCompositeOperation = "lighten";
       for (const [x, y, c] of glowCells) {
-        const r = Math.min(30, 12 + Math.sqrt(c) * 1.5) + 34;
+        const r = Math.min(34, 14 + Math.sqrt(c) * 1.6) + 46;
         const grad = g.createRadialGradient(x, y, 0, x, y, r);
-        grad.addColorStop(0, `rgba(${NEON}, 1)`);
-        grad.addColorStop(0.45, `rgba(${NEON}, 0.55)`);
+        grad.addColorStop(0, `rgba(${NEON}, 0.9)`);
+        grad.addColorStop(0.35, `rgba(${NEON}, 0.6)`);
+        grad.addColorStop(0.7, `rgba(${NEON}, 0.2)`);
         grad.addColorStop(1, `rgba(${NEON}, 0)`);
         g.fillStyle = grad;
         g.fillRect(x - r, y - r, r * 2, r * 2);
       }
+
+      // Keep the glow inside the outline of the US: mask it with a soft-edged silhouette built
+      // from the land grid, so heat never bleeds past the coasts or borders.
+      const mask = document.createElement("canvas");
+      mask.width = canvas.width;
+      mask.height = canvas.height;
+      const m = mask.getContext("2d")!;
+      m.setTransform(k * dpr, 0, 0, k * dpr, 0, 0);
+      const edge = data.step * 1.1;
+      for (let i = 0; i < n; i++) {
+        const mg = m.createRadialGradient(xs[i], ys[i], 0, xs[i], ys[i], edge);
+        mg.addColorStop(0, "rgba(0,0,0,0.7)");
+        mg.addColorStop(1, "rgba(0,0,0,0)");
+        m.fillStyle = mg;
+        m.fillRect(xs[i] - edge, ys[i] - edge, edge * 2, edge * 2);
+      }
+      g.setTransform(1, 0, 0, 1, 0, 0);
+      g.globalCompositeOperation = "destination-in";
+      g.drawImage(mask, 0, 0);
     };
 
     const resize = () => {
@@ -164,7 +184,7 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
       const glowA = waiting ? 0 : Math.min(1, Math.max(0, (elapsed - 1000) / 1400));
       if (glowA < 1 && !waiting) moving = true;
       if (glow && glowA > 0) {
-        ctx.globalAlpha = 0.42 * glowA;
+        ctx.globalAlpha = 0.85 * glowA;
         ctx.drawImage(glow, 0, 0);
         ctx.globalAlpha = 1;
       }

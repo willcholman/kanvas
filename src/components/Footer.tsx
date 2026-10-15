@@ -75,7 +75,7 @@ export function FooterReveal() {
     <div
       aria-hidden
       className="sticky bottom-0 z-0 -mt-[28px] overflow-hidden pt-[calc(28px+4vw)] sm:-mt-[44px] sm:pt-[calc(44px+4vw)]"
-      style={{ background: "linear-gradient(180deg, #f4fbdf 0%, #ccff33 100%)" }}
+      style={{ background: "linear-gradient(180deg, #ccff33 0%, #e4ff99 45%, #ffffff 100%)" }}
     >
       <Wordmark className="block h-auto w-full text-white" title="" />
     </div>

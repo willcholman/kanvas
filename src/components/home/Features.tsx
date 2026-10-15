@@ -16,7 +16,7 @@ export function Features() {
       <div className="mx-auto max-w-[1120px]">
         <Reveal className="mx-auto max-w-[760px] text-center">
           <h2 id="features-title" className="t-h2">
-            Built for how you actually train.
+            Built for how you train.
           </h2>
         </Reveal>
 

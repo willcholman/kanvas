@@ -17,7 +17,7 @@ export function HeroFrame({ children }: { children: React.ReactNode }) {
     <motion.div
       ref={ref}
       aria-hidden
-      className="absolute inset-0 -z-10 overflow-hidden bg-ink [--hero-inset:10px] [--hero-radius:28px] sm:[--hero-inset:20px] sm:[--hero-radius:44px]"
+      className="absolute inset-0 -z-10 overflow-hidden bg-ink [--hero-inset:12px] [--hero-radius:28px] sm:[--hero-inset:24px] sm:[--hero-radius:44px]"
       style={{
         ["--hp" as string]: p,
         clipPath: "inset(calc(var(--hp) * var(--hero-inset)) round calc(var(--hp) * var(--hero-radius)))",

@@ -71,6 +71,14 @@ p, li, blockquote {
   --focus-inner: #ffffff;
 }
 
+/* Text fields show focus with their own border or fill, not the ring. */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 /* ------------------------------------------------------------------------
    Type scale
    ------------------------------------------------------------------------ */

@@ -25,7 +25,7 @@ export function Hero() {
       </HeroFrame>
 
       <div className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col items-center justify-center px-5 pt-28 pb-36 text-center">
-        <h1 className="t-display">
+        <h1 className="t-display leading-[1.08]">
           Your app tracks runs.
           <br />
           <em className="italic">Not rounds.</em>
