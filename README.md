@@ -29,7 +29,7 @@ Other scripts:
 
 | What | Where |
 |---|---|
-| Testimonial cards (photo and quote, shown over the gym map) | `src/content/testimonials.ts`. Put photos in `public/testimonials/` and set `photo: "/testimonials/name.jpg"` plus a `photoAlt`. Portrait (about 4:5) works best. |
+| Testimonial cards (photo, quote, optional name and tag chip; shown over the gym map) | `src/content/testimonials.ts`. Put photos in `public/testimonials/` and set `photo: "/testimonials/name.jpg"` plus a `photoAlt`. Portrait (about 4:5) works best. |
 | FAQ | `src/content/faq.ts` |
 | Rotating disciplines (hero and form options) | `DISCIPLINES` in `src/content/site.ts` |
 | Site title, description, email, Instagram | `SITE` in `src/content/site.ts` |

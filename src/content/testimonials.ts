@@ -5,24 +5,33 @@
  * - photo: a path under /public/testimonials (e.g. "/testimonials/jordan.jpg"), or null
  *   to show the "Photo coming soon" placeholder. Use portrait photos, about 4:5.
  * - photoAlt: describe the photo for screen readers (e.g. "Jordan drilling guard passes").
+ * - name: shown bottom-left of the quote (optional).
+ * - tag: small chip shown bottom-right, e.g. the discipline (optional).
  * - Copy rule: no em dashes.
  */
 export type Testimonial = {
   photo: string | null;
   photoAlt: string;
   quote: string;
+  name?: string;
+  tag?: string;
 };
 
 export const TESTIMONIALS: Testimonial[] = [
   {
-    photo: null,
-    photoAlt: "",
-    quote: "Placeholder quote. Athlete testimonial goes here.",
+    photo: "/testimonials/ben-h.jpg",
+    photoAlt: "Ben H. in a white gi and blue belt, holding his Brazilian Jiu-Jitsu belt certificate",
+    quote: "Keeping track of my progress helps me stay focused and reach my goals.",
+    name: "Ben H.",
+    tag: "BJJ",
   },
   {
-    photo: null,
-    photoAlt: "",
-    quote: "Placeholder quote. Athlete testimonial goes here.",
+    photo: "/testimonials/will-h.jpg",
+    photoAlt: "Will H. training high kicks with a partner on the mats",
+    quote:
+      "Being able to connect with gym friends and schedule training sessions makes me get out and train more often.",
+    name: "Will H.",
+    tag: "MMA",
   },
   {
     photo: null,
