@@ -7,8 +7,7 @@ const FEATURES = [
   { icon: icons.friends, title: "Train with your friends.", body: "A feed of your teammates' sessions, with likes and comments.", span: "" },
   { icon: icons.gym, title: "Join your gym.", body: "Find your gym and train alongside your team on Kanvas.", span: "" },
   { icon: icons.badges, title: "Earn badges.", body: "Milestones and a trophy case for the work you put in.", span: "" },
-  { icon: icons.home, title: "Workouts for home.", body: "AI workouts built around your discipline for days off the mats.", span: "" },
-  { icon: icons.share, title: "Share to your Story.", body: "One tap turns any session into an Instagram Story with your stats.", span: "lg:col-span-2" },
+  { icon: icons.share, title: "Share to your Story.", body: "One tap turns any session into an Instagram Story with your stats.", span: "md:col-span-2 lg:col-span-3" },
 ];
 
 export function Features() {

@@ -46,13 +46,6 @@ export const icons = {
       <path d="M12 6.5l.8 1.6 1.7.2-1.2 1.2.3 1.7-1.6-.8-1.6.8.3-1.7-1.2-1.2 1.7-.2z" />
     </svg>
   ),
-  home: (
-    <svg {...base}>
-      <path d="M3.5 11L12 4l8.5 7" />
-      <path d="M5.5 9.5v10h13v-10" />
-      <path d="M9 15h6M9.5 13.5v3M14.5 13.5v3" />
-    </svg>
-  ),
   share: (
     <svg {...base}>
       <rect x="6.5" y="2.5" width="11" height="19" rx="2.5" />

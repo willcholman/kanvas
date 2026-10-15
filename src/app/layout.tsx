@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { MotionConfig } from "motion/react";
 import { SITE } from "@/content/site";
 import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
+import { Footer, FooterReveal } from "@/components/Footer";
 import { WaitlistProvider } from "@/components/waitlist/WaitlistProvider";
 import "./globals.css";
 
@@ -56,8 +56,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               Skip to content
             </a>
             <Nav />
-            <main id="main">{children}</main>
-            <Footer />
+            {/* The page is a white sheet with rounded bottom corners (matching the hero video frame)
+                that scrolls up off the pinned wordmark below it. */}
+            <div className="relative z-10 rounded-b-[28px] bg-paper sm:rounded-b-[44px]">
+              <main id="main">{children}</main>
+              <Footer />
+            </div>
+            <FooterReveal />
           </WaitlistProvider>
         </MotionConfig>
         <Analytics />

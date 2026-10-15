@@ -13,7 +13,7 @@ export function Faq() {
     <section id="faq" aria-labelledby="faq-title" className="px-5 py-28 sm:py-36">
       <div className="mx-auto max-w-[760px]">
         <h2 id="faq-title" className="t-h2 text-center">
-          Questions.
+          FAQ
         </h2>
 
         <ul className="mt-12 space-y-3 sm:mt-16">

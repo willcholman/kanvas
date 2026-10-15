@@ -22,8 +22,17 @@ const GRID = "#e2e2df";
 const NEON = "204, 255, 51"; // #ccff33
 
 // Hover lens, in map units (the map is 1000 wide). A magnifying glass: dots under the pointer
-// grow in place and their neighbours spread outward to make room.
-const LENS_RADIUS = 90;
+// grow in place and their neighbours spread outward to make room. Its outline is a wobbly blob
+// (a few sine waves around the circle) that drifts as the pointer moves, so it never looks like
+// a perfect circle.
+const LENS_RADIUS = 50;
+const LENS_WOBBLE: [number, number, number][] = [
+  // [harmonic, amplitude, drift speed]
+  [2, 0.26, 0.0007],
+  [3, 0.17, -0.0011],
+  [5, 0.09, 0.0016],
+];
+const LENS_MAX = LENS_RADIUS * (1 + LENS_WOBBLE.reduce((a, w) => a + w[1], 0));
 const LENS_POWER = 0.62; // < 1 spreads the middle of the lens apart
 const LENS_GROW_GYM = 1.7;
 const LENS_GROW_GRID = 1.2;
@@ -109,6 +118,7 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
     let dpr = 1;
     let glow: HTMLCanvasElement | null = null;
     const pointer = { x: 0, y: 0, active: false };
+    const phase = new Float32Array(LENS_WOBBLE.length);
     let entranceStart = reduce ? -Infinity : Number.NaN; // NaN = waiting to play
     let raf = 0;
 
@@ -161,6 +171,11 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
 
       ctx.setTransform(k * dpr, 0, 0, k * dpr, 0, 0);
       const ease = reduce ? 1 : 0.2;
+      // The lens outline drifts over time and with the pointer, so its shape keeps changing.
+      for (let w = 0; w < LENS_WOBBLE.length; w++) {
+        phase[w] = (reduce ? 0 : now * LENS_WOBBLE[w][2]) + pointer.x * 0.013 * (w + 1) + pointer.y * 0.009 * (w + 2);
+      }
+      if (pointer.active && !reduce) moving = true;
 
       for (let pass = 0; pass < 2; pass++) {
         ctx.beginPath();
@@ -173,13 +188,20 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
             const dx = xs[i] - pointer.x;
             const dy = ys[i] - pointer.y;
             const d = Math.hypot(dx, dy);
-            if (d < LENS_RADIUS) {
-              const u = d / LENS_RADIUS;
+            let reach = 0;
+            if (d < LENS_MAX) {
+              const a = Math.atan2(dy, dx);
+              let wob = 1;
+              for (let w = 0; w < LENS_WOBBLE.length; w++) wob += LENS_WOBBLE[w][1] * Math.sin(LENS_WOBBLE[w][0] * a + phase[w]);
+              reach = LENS_RADIUS * wob;
+            }
+            if (d < reach) {
+              const u = d / reach;
               const t = 1 - u;
               const e = t * t * (3 - 2 * t);
               ts = 1 + e * (gym[i] ? LENS_GROW_GYM : LENS_GROW_GRID);
               if (d > 0.001) {
-                const push = LENS_RADIUS * (Math.pow(u, LENS_POWER) - u);
+                const push = reach * (Math.pow(u, LENS_POWER) - u);
                 tx = (dx / d) * push;
                 ty = (dy / d) * push;
               }
@@ -270,13 +292,12 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
             + gyms nationwide.
           </span>
         </h2>
-        <p className="t-body mt-3 text-ash">Your gym is probably already here.</p>
       </div>
 
       {/* Sized by both width and height so the whole map fits on screen while it is pinned. */}
       <div
         ref={boxRef}
-        className="mt-8 w-[min(100%,1040px,calc((100svh-230px)*1.613))] sm:mt-10"
+        className="mt-8 w-[min(100%,1040px,calc((100svh-190px)*1.613))] sm:mt-10"
         style={{ aspectRatio: `${W} / ${H}` }}
       >
         <canvas ref={canvasRef} role="img" aria-label={label} className="block h-full w-full" />

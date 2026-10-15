@@ -4,35 +4,40 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 const HOLD_MS = 2000;
+const SLIDE = { duration: 0.42, ease: [0.65, 0, 0.35, 1] as const };
 
-/** The neon discipline word under "Kanvas tracks your:". Decorative; the full list is read once via sr-only text. */
+/**
+ * The neon discipline word under "Kanvas tracks your:". One word at a time: the current word
+ * slides up out of a clipped line, then the next slides up into it. Decorative; the full list is
+ * read once via sr-only text.
+ */
 export function RotatingWord({ words }: { words: readonly string[] }) {
   const reduce = useReducedMotion();
   const [i, setI] = useState(0);
 
   useEffect(() => {
-    const id = window.setInterval(() => setI((n) => (n + 1) % words.length), HOLD_MS + (reduce ? 700 : 500));
+    const id = window.setInterval(() => setI((n) => (n + 1) % words.length), HOLD_MS + (reduce ? 900 : 840));
     return () => window.clearInterval(id);
   }, [words.length, reduce]);
 
   const variants = reduce
     ? {
         initial: { opacity: 0 },
-        animate: { opacity: 1, transition: { duration: 0.7 } },
-        exit: { opacity: 0, transition: { duration: 0.7 } },
+        animate: { opacity: 1, transition: { duration: 0.45 } },
+        exit: { opacity: 0, transition: { duration: 0.45 } },
       }
     : {
-        initial: { y: "70%", opacity: 0, filter: "blur(10px)" },
-        animate: { y: "0%", opacity: 1, filter: "blur(0px)", transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
-        exit: { y: "-70%", opacity: 0, filter: "blur(10px)", transition: { duration: 0.45, ease: [0.55, 0, 0.75, 0.2] as const } },
+        initial: { y: "105%" },
+        animate: { y: "0%", transition: SLIDE },
+        exit: { y: "-105%", transition: SLIDE },
       };
 
   return (
-    <span aria-hidden className="relative block h-[1.1em] w-full overflow-visible">
-      <AnimatePresence initial={false}>
+    <span aria-hidden className="relative flex h-[1.15em] w-full justify-center overflow-hidden">
+      <AnimatePresence initial={false} mode="wait">
         <motion.span
           key={words[i]}
-          className="absolute inset-x-0 top-0 block whitespace-nowrap text-neon"
+          className="block whitespace-nowrap text-center text-neon"
           variants={variants}
           initial="initial"
           animate="animate"

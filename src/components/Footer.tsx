@@ -60,15 +60,24 @@ export function Footer() {
           </div>
         </div>
       </div>
-
-      {/* Giant wordmark sign-off on a white-to-neon wash. */}
-      <div
-        aria-hidden
-        className="overflow-hidden px-[3vw] pt-[8vw]"
-        style={{ background: "linear-gradient(180deg, #ffffff 0%, #ccff33 100%)" }}
-      >
-        <Wordmark className="block h-auto w-full translate-y-[6%] text-white" title="" />
-      </div>
     </footer>
+  );
+}
+
+/**
+ * Giant wordmark sign-off on a white-to-neon wash. It is pinned to the bottom of the screen
+ * behind the page (sticky, under the z-10 page sheet), so it never moves: scrolling to the end
+ * slides the white page up off it. The negative top margin tucks it under the sheet's rounded
+ * corners so the wash shows through the curves.
+ */
+export function FooterReveal() {
+  return (
+    <div
+      aria-hidden
+      className="sticky bottom-0 z-0 -mt-[28px] overflow-hidden pt-[calc(28px+4vw)] sm:-mt-[44px] sm:pt-[calc(44px+4vw)]"
+      style={{ background: "linear-gradient(180deg, #f4fbdf 0%, #ccff33 100%)" }}
+    >
+      <Wordmark className="block h-auto w-full text-white" title="" />
+    </div>
   );
 }
