@@ -8,7 +8,7 @@ import { track } from "@vercel/analytics";
 import { DISCIPLINE_OPTIONS, type WaitlistResponse } from "@/lib/waitlist";
 import type { Role } from "./WaitlistProvider";
 
-type Props = { open: boolean; role: Role; source: string; onClose: () => void };
+type Props = { open: boolean; role: Role; email: string; source: string; onClose: () => void };
 
 type Fields = {
   firstName: string;
@@ -45,7 +45,7 @@ function utmParams() {
   return out;
 }
 
-export default function WaitlistModal({ open, role, source, onClose }: Props) {
+export default function WaitlistModal({ open, role, email, source, onClose }: Props) {
   const reduce = useReducedMotion();
   // Read synchronously (this component never renders on the server) so the first open already
   // uses the right animation; switching variants mid-animation would strand the panel.
@@ -62,13 +62,14 @@ export default function WaitlistModal({ open, role, source, onClose }: Props) {
   const [status, setStatus] = useState<Status>("idle");
   const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
 
-  // Reset the form each time the modal opens fresh.
+  // Reset the form each time the modal opens fresh, carrying over an email typed elsewhere.
   useEffect(() => {
     if (open) {
       setStatus((s) => (s === "created" || s === "exists" ? "idle" : s));
       setServerErrors({});
+      if (email) setFields((f) => ({ ...f, email }));
     }
-  }, [open]);
+  }, [open, email]);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 639px)");

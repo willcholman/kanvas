@@ -1,4 +1,3 @@
-import { Blobs } from "../Blobs";
 import { Reveal } from "../Reveal";
 import { icons } from "./FeatureIcons";
 
@@ -15,11 +14,9 @@ const FEATURES = [
 export function Features() {
   return (
     <section id="what-you-get" aria-labelledby="features-title" className="relative isolate scroll-mt-24 px-5 py-28 sm:py-36">
-      <Blobs preset="features" />
       <div className="mx-auto max-w-[1120px]">
         <Reveal className="mx-auto max-w-[760px] text-center">
-          <p className="t-label text-ash">What you get</p>
-          <h2 id="features-title" className="t-h2 mt-4">
+          <h2 id="features-title" className="t-h2">
             Built for how you actually train.
           </h2>
         </Reveal>

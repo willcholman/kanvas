@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { DISCIPLINES } from "@/content/site";
-import { WaitlistButton } from "../waitlist/WaitlistButton";
 import { HeroVideo } from "./HeroVideo";
+import { HeroFrame } from "./HeroFrame";
+import { HeroEmailBar } from "./HeroEmailBar";
 import { RotatingWord } from "./RotatingWord";
 import poster from "../../../public/video/hero-poster.jpg";
 
@@ -9,62 +10,41 @@ const spoken = `${DISCIPLINES.slice(0, -1).join(", ")}, and ${DISCIPLINES[DISCIP
 
 export function Hero() {
   return (
-    <section id="hero" className="on-dark relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-ink text-white">
-      <Image
-        src={poster}
-        alt=""
-        fill
-        preload
-        fetchPriority="high"
-        sizes="100vw"
-        quality={70}
-        className="-z-20 object-cover"
-      />
-      <div className="absolute inset-0 -z-10">
+    <section id="hero" className="on-dark relative isolate flex min-h-[100svh] flex-col text-white">
+      <HeroFrame>
+        <Image src={poster} alt="" fill preload fetchPriority="high" sizes="100vw" quality={70} className="object-cover" />
         <HeroVideo />
-      </div>
+        {/* Readability: darker at the center (behind the copy) and at the bottom (behind the email bar). */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(10,10,10,0.62) 0%, rgba(10,10,10,0.38) 60%, rgba(10,10,10,0.28) 100%), linear-gradient(180deg, rgba(10,10,10,0.35) 0%, rgba(10,10,10,0) 28%, rgba(10,10,10,0) 55%, rgba(10,10,10,0.75) 100%)",
+          }}
+        />
+      </HeroFrame>
 
-      {/* Readability: darker at the center (behind the copy) and at the bottom. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(10,10,10,0.62) 0%, rgba(10,10,10,0.38) 60%, rgba(10,10,10,0.28) 100%), linear-gradient(180deg, rgba(10,10,10,0.35) 0%, rgba(10,10,10,0) 28%, rgba(10,10,10,0) 55%, rgba(10,10,10,0.75) 100%)",
-        }}
-      />
-
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center px-5 pt-28 pb-24 text-center">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col items-center justify-center px-5 pt-28 pb-36 text-center">
         <h1 className="t-display">
           Your app tracks runs.
           <br />
-          Not rounds.
+          <em className="italic">Not rounds.</em>
         </h1>
 
-        <p className="mt-10 sm:mt-12">
+        <p className="mt-8 sm:mt-10">
           <span className="sr-only">Kanvas tracks your {spoken}.</span>
-          <span aria-hidden className="t-h3 block text-white">
+          <span aria-hidden className="block text-[clamp(16px,1.28vw,19px)] leading-[1.2] font-normal tracking-[-0.01em] text-white">
             Kanvas tracks your:
           </span>
-          <span aria-hidden className="mt-1 block text-[clamp(36px,5vw,64px)] leading-[1.1] font-semibold tracking-[-0.03em]">
+          <span aria-hidden className="mt-1 block text-[clamp(29px,4vw,51px)] leading-[1.1] font-normal tracking-[-0.025em]">
             <RotatingWord words={DISCIPLINES} />
           </span>
         </p>
-
-        <div className="mt-10 flex flex-col items-center gap-4 sm:mt-12">
-          <WaitlistButton variant="light" />
-          <p className="text-[14px] text-white/70">Coming soon to iPhone and Android.</p>
-        </div>
       </div>
 
-      {/* Scroll cue */}
-      <a
-        href="#what-you-get"
-        aria-label="Scroll to features"
-        className="absolute bottom-7 left-1/2 flex h-10 w-6 -translate-x-1/2 justify-center overflow-hidden rounded-full border border-white/35"
-      >
-        <span className="scroll-cue-dot mt-2 block h-2 w-[3px] rounded-full bg-white/80" />
-      </a>
+      <div className="absolute inset-x-0 bottom-8 flex justify-center px-5 sm:bottom-12">
+        <HeroEmailBar />
+      </div>
     </section>
   );
 }

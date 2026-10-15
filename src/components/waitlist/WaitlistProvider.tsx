@@ -6,7 +6,9 @@ import dynamic from "next/dynamic";
 
 export type Role = "athlete" | "coach";
 
-type Ctx = { open: (opts?: { role?: Role }) => void };
+type OpenOptions = { role?: Role; /** Prefills the email field, e.g. from the hero email bar. */ email?: string };
+
+type Ctx = { open: (opts?: OpenOptions) => void };
 
 const WaitlistContext = createContext<Ctx | null>(null);
 
@@ -15,17 +17,21 @@ const WaitlistModal = dynamic(() => import("./WaitlistModal"), { ssr: false });
 
 export function WaitlistProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [state, setState] = useState<{ open: boolean; role: Role }>({ open: false, role: "athlete" });
+  const [state, setState] = useState<{ open: boolean; role: Role; email: string }>({
+    open: false,
+    role: "athlete",
+    email: "",
+  });
   const [loaded, setLoaded] = useState(false);
   const opener = useRef<HTMLElement | null>(null);
 
   const open = useCallback(
-    (opts?: { role?: Role }) => {
+    (opts?: OpenOptions) => {
       opener.current = (document.activeElement as HTMLElement) ?? null;
       // Every signup made on /coaches is a coach signup.
       const role: Role = opts?.role ?? (pathname?.startsWith("/coaches") ? "coach" : "athlete");
       setLoaded(true);
-      setState({ open: true, role });
+      setState({ open: true, role, email: opts?.email?.trim() ?? "" });
     },
     [pathname],
   );
@@ -39,7 +45,9 @@ export function WaitlistProvider({ children }: { children: React.ReactNode }) {
   return (
     <WaitlistContext.Provider value={{ open }}>
       {children}
-      {loaded && <WaitlistModal open={state.open} role={state.role} onClose={close} source={pathname ?? "/"} />}
+      {loaded && (
+        <WaitlistModal open={state.open} role={state.role} email={state.email} onClose={close} source={pathname ?? "/"} />
+      )}
     </WaitlistContext.Provider>
   );
 }

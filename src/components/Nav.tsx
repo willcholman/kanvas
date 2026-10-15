@@ -84,7 +84,7 @@ export function Nav() {
     <header className={`pointer-events-none fixed inset-x-0 top-4 z-50 flex flex-col items-center px-4 ${dark ? "on-dark" : ""}`}>
       <nav
         aria-label="Main"
-        className={`pointer-events-auto flex items-center gap-1 rounded-[17px] p-1 transition-[background-color,border-color,box-shadow,color] duration-500 ease-out ${
+        className={`pointer-events-auto flex items-center gap-1 rounded-[17px] p-1 transition-[background-color,border-color,box-shadow] duration-300 ${
           dark ? "glass-dark text-white" : "glass text-ink"
         }`}
       >
@@ -92,7 +92,7 @@ export function Nav() {
         <Link
           href="/"
           aria-label="Kanvas home"
-          className={`${seg} px-3.5 ${dark ? "hover:bg-white/10" : "hover:bg-ink/[0.05]"}`}
+          className={`${seg} px-3.5 ${dark ? "text-white hover:bg-white/10" : "text-ink hover:bg-ink/[0.05]"}`}
         >
           <motion.span
             className="block overflow-hidden"

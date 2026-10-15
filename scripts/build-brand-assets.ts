@@ -27,7 +27,7 @@ const SRC = process.env.KANVAS_ASSETS ?? "C:/Users/willc/Desktop/Kanvas Website 
 const ROOT = path.resolve(__dirname, "..");
 const out = (...p: string[]) => path.join(ROOT, ...p);
 
-const NEON = "#beeb3b";
+const NEON = "#ccff33";
 
 async function prepBitmap(file: string, width: number): Promise<{ buf: Buffer; w: number; h: number }> {
   // Downscale, flatten onto white, soften the stair-stepped source edges, then threshold

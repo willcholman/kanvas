@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Blobs } from "@/components/Blobs";
 import { WaitlistButton } from "@/components/waitlist/WaitlistButton";
 
 export const metadata: Metadata = {
@@ -11,7 +10,6 @@ export const metadata: Metadata = {
 export default function CoachesPage() {
   return (
     <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden px-5 pt-28 pb-20">
-      <Blobs preset="coaches" />
       <div className="glass w-full max-w-[560px] rounded-[32px] px-8 py-14 text-center sm:px-14 sm:py-20">
         <p className="t-label text-ash">For coaches</p>
         <h1 className="t-h2 mt-4">Coming soon.</h1>

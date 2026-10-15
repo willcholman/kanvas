@@ -29,7 +29,7 @@ Other scripts:
 
 | What | Where |
 |---|---|
-| Testimonials (photo, quote, name, discipline, gym) | `src/content/testimonials.ts`. Put photos in `public/testimonials/` and set `photo: "/testimonials/name.jpg"` plus a `photoAlt`. Portrait (about 4:5) works best. |
+| Testimonial cards (photo and quote, shown over the gym map) | `src/content/testimonials.ts`. Put photos in `public/testimonials/` and set `photo: "/testimonials/name.jpg"` plus a `photoAlt`. Portrait (about 4:5) works best. |
 | FAQ | `src/content/faq.ts` |
 | Rotating disciplines (hero and form options) | `DISCIPLINES` in `src/content/site.ts` |
 | Site title, description, email, Instagram | `SITE` in `src/content/site.ts` |
@@ -38,7 +38,7 @@ Other scripts:
 | Privacy and Terms (currently drafts) | `src/app/privacy/page.tsx`, `src/app/terms/page.tsx` |
 | Confirmation email | `src/lib/email.ts` (replace `[Kanvas LLC mailing address]` before launch, it is required by CAN-SPAM) |
 
-Copy rules: no em dashes anywhere. Neon (`#beeb3b`) is an accent only: the hero's rotating word, the map's heat glow, the soft background blobs, the signup success check, and focus rings. Never use it for text on white.
+Copy rules: no em dashes anywhere. Neon (`#ccff33`) is an accent only: the hero's rotating word, the map's heat glow, the footer wordmark gradient, the signup success check, and focus rings. Never use it for text on white.
 
 ## Rebuild the gym map
 

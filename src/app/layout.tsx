@@ -11,6 +11,7 @@ import "./globals.css";
 const interTight = Inter_Tight({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
   variable: "--font-inter-tight",
   display: "swap",
   fallback: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],

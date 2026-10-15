@@ -17,6 +17,7 @@ export const SITE = {
     "Kanvas is the app for martial artists. Log your training, track your progress, and train with your gym. Join the waitlist.",
   email: "contact@kanvasfit.com",
   instagram: { handle: "@kanvasfit", url: "https://instagram.com/kanvasfit" },
+  tiktok: { handle: "@kanvasfit", url: "https://www.tiktok.com/@kanvasfit" },
 } as const;
 
 /** The disciplines rotated in the hero and offered in the waitlist form. */
