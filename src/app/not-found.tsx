@@ -1,19 +1,36 @@
 import Link from "next/link";
-import { Mark } from "@/components/brand/Logo";
+
+// Same wash as the footer reveal, and a slightly deeper version of it for the numerals.
+const WASH = "linear-gradient(180deg, #ccff33 0%, #e4ff99 45%, #ffffff 100%)";
+const NUMERALS = "linear-gradient(180deg, #b4ea12 0%, #cdf266 45%, #edf5d6 100%)";
 
 export default function NotFound() {
   return (
-    <section className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden px-5 pt-28 pb-20 text-center">
-      <div className="flex flex-col items-center">
-        <Mark className="h-12 w-auto text-ink" title="" />
-        <p className="t-label mt-8 text-ash">Error 404</p>
-        <h1 className="t-h2 mt-4 max-w-[16ch]">This page tapped out.</h1>
-        <p className="t-body mt-4 max-w-[40ch] text-ash">The link may be old, or the page moved. Head back home to keep training.</p>
+    <section className="fixed inset-0 z-[60] overflow-hidden" style={{ background: WASH }}>
+      <h1 className="absolute inset-0 flex items-center justify-center">
+        <span className="sr-only">Page not found</span>
+        {/* Giant 404 filling the screen, cropped at the edges. */}
+        <span
+          aria-hidden
+          className="block bg-clip-text leading-[0.8] font-semibold tracking-[-0.06em] whitespace-nowrap text-transparent select-none"
+          style={{ fontSize: "max(58vw, min(82svh, 66vw))", backgroundImage: NUMERALS, backgroundSize: "100% 100svh", backgroundPosition: "center" }}
+        >
+          404
+        </span>
+      </h1>
+
+      <div className="absolute inset-0 flex items-center justify-center px-5">
         <Link
           href="/"
-          className="mt-10 inline-flex h-12 items-center rounded-full bg-ink px-7 text-[16px] font-medium text-white transition-colors hover:bg-ink/85"
+          className="group inline-flex items-center gap-3 rounded-full text-[clamp(20px,2vw,28px)] font-medium tracking-[-0.02em] text-ink"
         >
-          Back to home
+          <svg aria-hidden width="1.1em" height="1.1em" viewBox="0 0 24 24" fill="none" className="shrink-0 transition-transform duration-300 group-hover:-translate-x-1">
+            <circle cx="12" cy="12" r="10.5" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M16 12H8M11.5 8.5L8 12l3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span className="underline decoration-transparent underline-offset-4 transition-colors duration-300 group-hover:decoration-ink">
+            Take me back home.
+          </span>
         </Link>
       </div>
     </section>

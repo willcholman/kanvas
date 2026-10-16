@@ -15,7 +15,8 @@ export function GymStory({ headline, topStates }: { headline: number; topStates:
       <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden px-5 pt-20 pb-6">
         <GymMap headline={headline} topStates={topStates} />
       </div>
-      <div className="relative z-10 px-5 pt-[25svh] pb-[100svh]">
+      {/* Top padding holds the cards back until the pinned intro (heading, subline, map) has played. */}
+      <div className="relative z-10 px-5 pt-[125svh] pb-[100svh]">
         <TestimonialCards />
       </div>
     </section>

@@ -92,6 +92,13 @@ export function Nav() {
         <Link
           href="/"
           aria-label="Kanvas home"
+          onClick={(e) => {
+            // Already home: glide back to the top instead of reloading the route.
+            if (pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+            }
+          }}
           className={`${seg} px-3.5 ${dark ? "text-white hover:bg-white/10" : "text-ink hover:bg-ink/[0.05]"}`}
         >
           <motion.span
@@ -160,6 +167,14 @@ export function Nav() {
           </svg>
         </button>
 
+      </nav>
+
+      {/* Join waitlist sits in its own pill in the top-right corner, level with the main nav. */}
+      <div
+        className={`pointer-events-auto absolute top-0 right-4 rounded-[17px] p-1 transition-[background-color,border-color,box-shadow] duration-300 sm:right-6 ${
+          dark ? "glass-dark" : "glass"
+        }`}
+      >
         <button
           type="button"
           onClick={() => open()}
@@ -171,7 +186,7 @@ export function Nav() {
           <span className="sm:hidden">Join</span>
           <span className="hidden sm:inline">Join waitlist</span>
         </button>
-      </nav>
+      </div>
 
       {/* Mobile glass sheet */}
       <AnimatePresence>

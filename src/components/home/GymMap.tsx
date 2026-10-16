@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { animate, useInView, useReducedMotion } from "motion/react";
+import { animate, motion, useInView, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "motion/react";
 
 type MapData = {
   width: number;
@@ -47,6 +47,15 @@ function listOf(items: string[]) {
 // Square-root scale, capped so dense metros stay as distinct dots instead of one blob.
 const baseRadius = (count: number) => (count === 0 ? 1.6 : Math.min(3.6, 1.6 + Math.sqrt(count) * 0.42));
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+const seg = (v: number, a: number, b: number) => Math.min(1, Math.max(0, (v - a) / (b - a)));
+const smooth = (t: number) => t * t * (3 - 2 * t);
+
+/**
+ * How much scrolling (in screen heights) the pinned intro takes: the heading sits alone, the
+ * italic subline fades in, then the heading lifts while the map rises into the center.
+ * GymStory holds the testimonial cards back by about this much.
+ */
+export const INTRO_SCREENS = 1.1;
 
 export function GymMap({ headline, topStates }: { headline: number; topStates: string[] }) {
   const reduce = useReducedMotion();
@@ -55,9 +64,52 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const numRef = useRef<HTMLSpanElement>(null);
   const near = useInView(rootRef, { once: true, margin: "800px 0px" });
-  const headingIn = useInView(numRef, { once: true, margin: "0px 0px -15% 0px" });
-  const mapIn = useInView(boxRef, { once: true, margin: "0px 0px -20% 0px" });
   const [data, setData] = useState<MapData | null>(null);
+
+  // Scroll-staged intro. Progress runs 0 -> 1 over the first INTRO_SCREENS of scroll after the
+  // section pins. Measurements live in refs so scrolling never re-renders.
+  const geom = useRef({ top: Infinity, len: 1 });
+  const stage = useRef({ lift: 0, rise: 0 });
+  useEffect(() => {
+    const measure = () => {
+      const section = rootRef.current?.closest("section");
+      const box = boxRef.current;
+      if (!section || !box) return;
+      geom.current = { top: section.getBoundingClientRect().top + window.scrollY, len: window.innerHeight * INTRO_SCREENS };
+      // While the map is hidden the heading sits lower by half the map's footprint, so it reads centered.
+      stage.current = { lift: (box.offsetHeight + parseFloat(getComputedStyle(box).marginTop)) / 2, rise: window.innerHeight * 0.35 };
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(document.body);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  const { scrollY } = useScroll();
+  const progress = useTransform(scrollY, (y) => {
+    if (reduce) return 1;
+    const { top, len } = geom.current;
+    return Number.isFinite(top) ? seg(y, top, top + len) : 0; // 0 until the section is measured
+  });
+  const subOpacity = useTransform(progress, (v) => smooth(seg(v, 0.06, 0.26)));
+  const subY = useTransform(progress, (v) => (1 - smooth(seg(v, 0.06, 0.26))) * 16);
+  const mapT = (v: number) => smooth(seg(v, 0.36, 0.86));
+  const mapOpacity = useTransform(progress, (v) => seg(v, 0.36, 0.7));
+  const mapY = useTransform(progress, (v) => (1 - mapT(v)) * stage.current.rise);
+  const headY = useTransform(progress, (v) => (1 - mapT(v)) * stage.current.lift);
+
+  const [countGo, setCountGo] = useState(false);
+  const [mapShown, setMapShown] = useState(false);
+  const checkStage = (v: number) => {
+    if (v > 0.12) setCountGo(true);
+    if (v > 0.55) setMapShown(true);
+  };
+  useMotionValueEvent(progress, "change", checkStage);
+  useEffect(() => checkStage(progress.get()), [progress]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load the precomputed grid only when the section is close.
   useEffect(() => {
@@ -65,10 +117,10 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
     import("@/data/gym-map.json").then((m) => setData(m.default as unknown as MapData));
   }, [near, data]);
 
-  // Count up from 0 when the headline enters the viewport.
+  // Count up from 0 as the subline appears.
   useEffect(() => {
     const el = numRef.current;
-    if (!el || !headingIn) return;
+    if (!el || !countGo) return;
     if (reduce) {
       el.textContent = fmt.format(headline);
       return;
@@ -79,7 +131,7 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
       onUpdate: (v) => (el.textContent = fmt.format(Math.round(v))),
     });
     return () => controls.stop();
-  }, [headingIn, headline, reduce]);
+  }, [countGo, headline, reduce]);
 
   // Canvas renderer: one element instead of thousands of SVG nodes, and it only redraws while
   // something is moving (the entrance or the hover lens).
@@ -295,33 +347,40 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
   }, [data, reduce]);
 
   useEffect(() => {
-    if (mapIn && data) engine.current?.play();
-  }, [mapIn, data]);
+    if (mapShown && data) engine.current?.play();
+  }, [mapShown, data]);
 
   const label = `Map of the United States showing ${fmt.format(headline)}+ martial arts gyms, most concentrated in ${listOf(topStates)}.`;
 
   return (
     <div ref={rootRef} className="flex w-full flex-col items-center">
-      <div className="mx-auto max-w-[820px] text-center">
+      <motion.div style={{ y: headY }} className="mx-auto max-w-[820px] text-center">
         <h2 id="gyms-title" className="t-h2">
-          <span className="sr-only">{fmt.format(headline)}+ gyms nationwide.</span>
+          Trusted by athletes nationwide.
+        </h2>
+        <motion.p
+          style={{ opacity: subOpacity, y: subY }}
+          className="mt-3 text-[clamp(20px,2vw,28px)] leading-[1.25] tracking-[-0.015em] text-ash italic"
+        >
+          <span className="sr-only">With {fmt.format(headline)}+ gyms available.</span>
           <span aria-hidden>
+            with{" "}
             <span ref={numRef} className="tabular-nums">
               {reduce ? fmt.format(headline) : "0"}
             </span>
-            + gyms nationwide.
+            + gyms available.
           </span>
-        </h2>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* Sized by both width and height so the whole map fits on screen while it is pinned. */}
-      <div
+      <motion.div
         ref={boxRef}
-        className="mt-8 w-[min(100%,1040px,calc((100svh-190px)*1.613))] sm:mt-10"
-        style={{ aspectRatio: `${W} / ${H}` }}
+        className="mt-8 w-[min(100%,1040px,calc((100svh-260px)*1.613))] sm:mt-10"
+        style={{ aspectRatio: `${W} / ${H}`, opacity: mapOpacity, y: mapY }}
       >
         <canvas ref={canvasRef} role="img" aria-label={label} className="block h-full w-full" />
-      </div>
+      </motion.div>
     </div>
   );
 }
