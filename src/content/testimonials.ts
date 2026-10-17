@@ -26,16 +26,18 @@ export const TESTIMONIALS: Testimonial[] = [
     tag: "BJJ",
   },
   {
+    photo: "/testimonials/ashley-s.jpg",
+    photoAlt: "Ashley S. smiling as she lands a kick on pads in a Muay Thai ring",
+    quote: "Sharing my sessions to my story keeps me accountable, and my friends always hype me up.",
+    name: "Ashley S.",
+    tag: "Muay Thai",
+  },
+  {
     photo: "/testimonials/will-h.jpg",
     photoAlt: "Will H. training high kicks with a partner on the mats",
     quote:
       "Being able to connect with gym friends and schedule training sessions makes me get out and train more often.",
     name: "Will H.",
     tag: "MMA",
-  },
-  {
-    photo: null,
-    photoAlt: "",
-    quote: "Placeholder quote. Athlete testimonial goes here.",
   },
 ];

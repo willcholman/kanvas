@@ -169,7 +169,11 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
     let k = 1; // CSS px per map unit
     let dpr = 1;
     let glow: HTMLCanvasElement | null = null;
+    // The lens follows the mouse anywhere on the page, not just events on the canvas: the
+    // testimonial cards sit above the pinned map, and the map moves while the page scrolls.
+    // Each frame re-reads where the map is, so the lens tracks it wherever it is on screen.
     const pointer = { x: 0, y: 0, active: false };
+    const mouse = { cx: 0, cy: 0, present: false };
     const phase = new Float32Array(LENS_WOBBLE.length);
     let entranceStart = reduce ? -Infinity : Number.NaN; // NaN = waiting to play
     let raf = 0;
@@ -243,6 +247,20 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
 
       ctx.setTransform(k * dpr, 0, 0, k * dpr, 0, 0);
       const ease = reduce ? 1 : 0.2;
+
+      // Where is the mouse relative to the map right now?
+      if (mouse.present) {
+        const rect = canvas.getBoundingClientRect();
+        const pad = LENS_MAX * k;
+        const onScreen = rect.bottom > 0 && rect.top < window.innerHeight;
+        const near =
+          mouse.cx > rect.left - pad && mouse.cx < rect.right + pad && mouse.cy > rect.top - pad && mouse.cy < rect.bottom + pad;
+        pointer.active = onScreen && near && !waiting;
+        pointer.x = (mouse.cx - rect.left) / k;
+        pointer.y = (mouse.cy - rect.top) / k;
+      } else {
+        pointer.active = false;
+      }
       // The lens outline drifts over time and with the pointer, so its shape keeps changing.
       for (let w = 0; w < LENS_WOBBLE.length; w++) {
         phase[w] = (reduce ? 0 : now * LENS_WOBBLE[w][2]) + pointer.x * 0.013 * (w + 1) + pointer.y * 0.009 * (w + 2);
@@ -315,23 +333,25 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
       },
     };
 
-    const toMap = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      pointer.x = (e.clientX - rect.left) / k;
-      pointer.y = (e.clientY - rect.top) / k;
-    };
     const onMove = (e: PointerEvent) => {
       if (e.pointerType === "touch") return; // let touch scroll the page
-      toMap(e);
-      pointer.active = true;
+      mouse.cx = e.clientX;
+      mouse.cy = e.clientY;
+      mouse.present = true;
       kick();
     };
     const onLeave = () => {
-      pointer.active = false;
+      mouse.present = false;
       kick();
     };
-    canvas.addEventListener("pointermove", onMove);
-    canvas.addEventListener("pointerleave", onLeave);
+    // Scrolling moves the map under a still mouse, so re-check on scroll too.
+    const onScroll = () => {
+      if (mouse.present) kick();
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.documentElement.addEventListener("pointerleave", onLeave);
+    window.addEventListener("blur", onLeave);
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     const ro = new ResizeObserver(resize);
     ro.observe(box);
@@ -339,8 +359,10 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
 
     return () => {
       ro.disconnect();
-      canvas.removeEventListener("pointermove", onMove);
-      canvas.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("blur", onLeave);
+      window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
       engine.current = null;
     };
