@@ -50,10 +50,12 @@ export function Faq() {
                       role="region"
                       aria-labelledby={btnId}
                       key="panel"
-                      initial={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
-                      animate={reduce ? { opacity: 1 } : { height: "auto", opacity: 1 }}
-                      exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
-                      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                      // Same values on server and client (the first item renders open); reduced
+                      // motion only changes timing, so the height snaps and the text fades.
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1], height: reduce ? { duration: 0 } : undefined }}
                       className="overflow-hidden"
                     >
                       <p className="t-body max-w-[60ch] px-6 pb-6 text-ash sm:px-7 sm:pb-7">{item.a}</p>

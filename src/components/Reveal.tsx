@@ -18,10 +18,12 @@ export function Reveal({
 }) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
+  // `initial` must match the server render, so it never depends on `reduce`. Under reduced motion
+  // the rise is instant (MotionConfig in the layout skips transforms) and only the fade plays.
   return (
     <Tag
       className={className}
-      initial={{ opacity: 0, y: reduce ? 0 : y }}
+      initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -12% 0px" }}
       transition={{ duration: reduce ? 0.4 : 0.7, delay, ease: [0.22, 1, 0.36, 1] }}

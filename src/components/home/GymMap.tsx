@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { animate, motion, useInView, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { animate, motion, useInView, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
 
 type MapData = {
   width: number;
@@ -90,8 +90,11 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
   }, []);
 
   const { scrollY } = useScroll();
-  const progress = useTransform(scrollY, (y) => {
-    if (reduce) return 1;
+  // Reduced motion skips the intro, but only after hydration so the first render matches the server.
+  const skipIntro = useMotionValue(0);
+  useEffect(() => skipIntro.set(reduce ? 1 : 0), [reduce, skipIntro]);
+  const progress = useTransform([scrollY, skipIntro] as MotionValue[], ([y, skip]: number[]) => {
+    if (skip) return 1;
     const { top, len } = geom.current;
     return Number.isFinite(top) ? seg(y, top, top + len) : 0; // 0 until the section is measured
   });
@@ -387,8 +390,10 @@ export function GymMap({ headline, topStates }: { headline: number; topStates: s
           <span className="sr-only">With {fmt.format(headline)}+ gyms available.</span>
           <span aria-hidden>
             with{" "}
+            {/* Always "0" in the HTML so server and browser agree; the effect above fills in the real
+                number (instantly when reduced motion is on). */}
             <span ref={numRef} className="tabular-nums">
-              {reduce ? fmt.format(headline) : "0"}
+              0
             </span>
             + gyms available.
           </span>

@@ -116,6 +116,83 @@ textarea:focus-visible {
   line-height: 1.5;
 }
 
+/* Home phone tour: feature title and body (t-body + 10%). */
+@utility t-feature-title {
+  font-size: clamp(28.6px, 3.3vw, 44px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+@utility t-feature-body {
+  font-size: clamp(18.7px, 1.32vw, 19.8px);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/*
+ * Kanvas-lime light behind the phone in the tour. Three layers of the brand lime (#ccff33):
+ * a breathing core, a blob that drifts around it, and slow-turning rays. Soft edges come from the
+ * gradients themselves (no blur filter), so animating it stays cheap. Still under reduced motion.
+ */
+@utility lime-glow {
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgb(204 255 51) 0%, rgb(204 255 51 / 0.92) 26%, rgb(204 255 51 / 0.5) 52%, rgb(204 255 51 / 0.16) 76%, rgb(204 255 51 / 0) 100%);
+  animation: lime-breathe 6s ease-in-out infinite;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 4% -8% 20% 6%;
+    border-radius: 9999px;
+    background: radial-gradient(closest-side, rgb(204 255 51 / 0.85), rgb(204 255 51 / 0.3) 55%, rgb(204 255 51 / 0) 100%);
+    animation: lime-drift 9s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    border-radius: 9999px;
+    background: conic-gradient(
+      rgb(204 255 51 / 0) 0deg,
+      rgb(204 255 51 / 0.55) 35deg,
+      rgb(204 255 51 / 0) 80deg,
+      rgb(204 255 51 / 0.45) 140deg,
+      rgb(204 255 51 / 0) 200deg,
+      rgb(204 255 51 / 0.5) 270deg,
+      rgb(204 255 51 / 0) 330deg
+    );
+    mask: radial-gradient(closest-side, #000 30%, rgb(0 0 0 / 0.5) 60%, transparent 100%);
+    animation: lime-spin 20s linear infinite;
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    &::before,
+    &::after {
+      animation: none;
+    }
+  }
+}
+
+@keyframes lime-breathe {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.07; }
+}
+
+@keyframes lime-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-10%, 9%) scale(1.12); }
+  66% { transform: translate(7%, -5%) scale(0.92); }
+}
+
+@keyframes lime-spin {
+  to { transform: rotate(360deg); }
+}
+
 @utility t-label {
   font-size: 12.5px;
   font-weight: 500;

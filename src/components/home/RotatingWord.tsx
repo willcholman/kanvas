@@ -20,17 +20,15 @@ export function RotatingWord({ words }: { words: readonly string[] }) {
     return () => window.clearInterval(id);
   }, [words.length, reduce]);
 
-  const variants = reduce
-    ? {
-        initial: { opacity: 0 },
-        animate: { opacity: 1, transition: { duration: 0.45 } },
-        exit: { opacity: 0, transition: { duration: 0.45 } },
-      }
-    : {
-        initial: { y: "105%" },
-        animate: { y: "0%", transition: SLIDE },
-        exit: { y: "-105%", transition: SLIDE },
-      };
+  // The values are the same either way so the server render matches; reduced motion only changes
+  // timing: the slide is skipped (MotionConfig) and the word cross-fades instead.
+  const fade = { duration: 0.45 };
+  const variants = {
+    initial: { y: "105%", opacity: 0 },
+    animate: { y: "0%", opacity: 1, transition: reduce ? fade : { ...SLIDE, opacity: { duration: 0 } } },
+    // Without reduced motion the word stays opaque until it has slid out of the clipped line.
+    exit: { y: "-105%", opacity: 0, transition: reduce ? fade : { ...SLIDE, opacity: { duration: 0, delay: SLIDE.duration } } },
+  };
 
   return (
     <span aria-hidden className="relative flex h-[1.15em] w-full justify-center overflow-hidden">

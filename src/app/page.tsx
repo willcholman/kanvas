@@ -1,5 +1,5 @@
 import { Hero } from "@/components/home/Hero";
-import { Features } from "@/components/home/Features";
+import { FeatureTour } from "@/components/home/FeatureTour";
 import { GymStory } from "@/components/home/GymStory";
 import { Faq } from "@/components/home/Faq";
 import { FinalCta } from "@/components/home/FinalCta";
@@ -9,7 +9,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <Features />
+      <FeatureTour />
       {/* Only the headline numbers are passed down; the dot grid loads lazily on the client. */}
       <GymStory headline={gymMap.headline} topStates={gymMap.topStates} />
       <Faq />
