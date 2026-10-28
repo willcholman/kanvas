@@ -16,7 +16,7 @@ const WaitlistContext = createContext<Ctx | null>(null);
 const WaitlistModal = dynamic(() => import("./WaitlistModal"), { ssr: false });
 
 export function WaitlistProvider({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
+  const pathname = usePathname(); // recorded as the signup source
   const [state, setState] = useState<{ open: boolean; role: Role; email: string }>({
     open: false,
     role: "athlete",
@@ -28,12 +28,11 @@ export function WaitlistProvider({ children }: { children: React.ReactNode }) {
   const open = useCallback(
     (opts?: OpenOptions) => {
       opener.current = (document.activeElement as HTMLElement) ?? null;
-      // Every signup made on /coaches is a coach signup.
-      const role: Role = opts?.role ?? (pathname?.startsWith("/coaches") ? "coach" : "athlete");
+      const role: Role = opts?.role ?? "athlete";
       setLoaded(true);
       setState({ open: true, role, email: opts?.email?.trim() ?? "" });
     },
-    [pathname],
+    [],
   );
 
   const close = useCallback(() => {

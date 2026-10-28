@@ -12,6 +12,7 @@ import { PhoneFrame, PhoneScreen } from "./PhoneFrame";
  *
  *   0.00 - 0.30  "Built for how you train." sits centered
  *   0.30 - 1.00  it shrinks into a small label at the top of the text column; the phone rises in
+ *   the label fades out as the first feature leaves, before the second one arrives
  *   then, per feature: hold ~0.6 (phone settled at that feature's pose, text readable), move 0.4
  *   (phone swings to the next pose, the screen pushes to the next feature, the text swaps)
  *
@@ -24,7 +25,7 @@ const HOLD = 0.6;
 const MOVE = 0.4;
 const FIRST = INTRO_HOLD + INTRO; // first feature settled
 const TOTAL = FIRST + HOLD + (N - 1) * (MOVE + HOLD); // timeline length, in screens
-const SCROLL = 0.85; // viewports of scrolling per timeline screen
+const SCROLL = 0.595; // viewports of scrolling per timeline screen
 
 /** Where the phone rests for each feature, in degrees. Never head on; it swings between these. */
 const POSES = [
@@ -127,6 +128,8 @@ function PinnedTour() {
   const glowX = useTransform(f, (ff) => poseAt(ff, "ry") * -1.2);
   const glowOpacity = useTransform(rise, [0.1, 0.8], [0, 1]);
   const textIn = useTransform(t, (v) => smooth(seg(v, FIRST - 0.2, FIRST + 0.05)));
+  // The label leaves with the first feature: gone by the time the second feature's text appears.
+  const headOpacity = useTransform(f, (v) => 1 - smooth(seg(v, 0.05, 0.42)));
 
   return (
     <section
@@ -136,13 +139,15 @@ function PinnedTour() {
       className="relative"
       style={{ height: `${(TOTAL * SCROLL + 1) * 100}svh` }}
     >
-      <div ref={stageRef} className="sticky top-0 h-[100svh] overflow-hidden">
+      {/* Clipped sideways only: the lime glow may spill below the stage, so it trails into the next
+          section as the tour unpins instead of ending in a hard edge. */}
+      <div ref={stageRef} className="sticky top-0 h-[100svh] overflow-x-clip">
         {/* Heading: one element, transformed from centered to label size. */}
         <motion.h2
           ref={headRef}
           id="features-title"
           className="t-h2 absolute top-0 left-0 z-10 origin-top-left whitespace-nowrap max-md:text-[7.2vw]"
-          style={{ x: headX, y: headY, scale: headS, color: headColor }}
+          style={{ x: headX, y: headY, scale: headS, color: headColor, opacity: headOpacity }}
         >
           Built for how you train.
         </motion.h2>

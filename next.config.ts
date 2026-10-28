@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     qualities: [70, 75],
   },
+  // The coaches page was retired; send old links home.
+  async redirects() {
+    return [{ source: "/coaches", destination: "/", permanent: false }];
+  },
   async headers() {
     return [
       {

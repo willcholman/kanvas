@@ -10,7 +10,7 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "iPhone or Android?",
-    a: "Both. Kanvas is launching on the App Store and Google Play.",
+    a: "Kanvas is launching on the App Store and Google Play.",
   },
   {
     q: "Which martial arts does it support?",
@@ -26,6 +26,6 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "What do you do with my email?",
-    a: "We only use it to tell you when Kanvas launches. No spam. Unsubscribe anytime.",
+    a: "We only use it to tell you when Kanvas launches. Unsubscribe anytime.",
   },
 ];
