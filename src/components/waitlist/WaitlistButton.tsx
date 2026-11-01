@@ -2,13 +2,15 @@
 
 import { useWaitlist, type Role } from "./WaitlistProvider";
 
-type Variant = "light" | "dark";
+type Variant = "light" | "dark" | "quiet";
 
 const VARIANTS: Record<Variant, string> = {
   // White pill, black text (for dark backgrounds such as the hero video).
   light: "bg-white text-ink hover:bg-white/90",
   // Black pill, white text (for the white page).
   dark: "bg-ink text-white hover:bg-ink/85",
+  // Soft grey pill, for a second action under a black one.
+  quiet: "bg-ink/[0.06] text-ink hover:bg-ink/10",
 };
 
 export function WaitlistButton({
