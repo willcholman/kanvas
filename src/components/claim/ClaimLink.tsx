@@ -43,6 +43,10 @@ async function call(body: Record<string, string>) {
   return { ok: res.ok, status: res.status, data };
 }
 
+// Read once: the hash is cleared from the address bar straight after, and React may run the
+// effect twice in development.
+let linkHash: string | null = null;
+
 const age = (days: number) =>
   days === 0 ? "Kanvas account created today" : `Kanvas account created ${days} day${days === 1 ? "" : "s"} ago`;
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
@@ -53,7 +57,8 @@ export function ClaimLink() {
   const [busy, setBusy] = useState<string | null>(null);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.hash.slice(1));
+    linkHash = window.location.hash || linkHash || "";
+    const params = new URLSearchParams(linkHash.slice(1));
     const c = params.get("c") ?? "";
     const t = params.get("t") ?? "";
     // Keep the token out of the address bar and history once it's read.
