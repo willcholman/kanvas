@@ -185,7 +185,7 @@ export function ClaimLink() {
           <div className="min-w-0">
             <div className="font-semibold">{v.claimant_name}</div>
             <div className="text-[13px] text-ash">
-              {age(v.account_age_days)} · {plural(v.sessions_here, "session")} at your gym
+              {age(v.account_age_days)} · trained at your gym on {plural(v.sessions_here, "day")}
             </div>
             <div className="truncate text-[13px] text-ash">Signs in as {v.signs_in_as}</div>
           </div>
