@@ -3,15 +3,17 @@ import { DISCIPLINES } from "@/content/site";
 
 export const DISCIPLINE_OPTIONS = [...DISCIPLINES, "Other"] as const;
 
-// Names go into the confirmation email, so only letters, spaces, apostrophes, hyphens and periods:
-// nobody can turn the greeting into a message or a link.
-const NAME = /^[\p{L}\p{M}][\p{L}\p{M}' .-]*$/u;
-const NAME_OR_EMPTY = /^(?:[\p{L}\p{M}][\p{L}\p{M}' .-]*)?$/u;
+// Names go into the confirmation email, so only letters, spaces, apostrophes, hyphens and a period
+// that ends an initial ("J. R."): nobody can turn the greeting into a message or a domain.
+const NAME = /^\p{L}[\p{L}\p{M}' -]*(?:\.(?=\s|$)[\p{L}\p{M}' -]*)*$/u;
+const NAME_OR_EMPTY = new RegExp(`^(?:${NAME.source.slice(1, -1)})?$`, "u");
 
-/** One mailbox, however it's spelled: lower case, without a +tag. */
+/** One mailbox, however it's spelled: lower case, without a +tag, and for Gmail without dots. */
 export function mailboxKey(email: string) {
-  const [local, domain] = email.toLowerCase().split("@");
-  return `${local.split("+")[0]}@${domain}`;
+  const [rawLocal, rawDomain] = email.toLowerCase().split("@");
+  const gmail = rawDomain === "gmail.com" || rawDomain === "googlemail.com";
+  const local = rawLocal.split("+")[0];
+  return gmail ? `${local.replaceAll(".", "")}@gmail.com` : `${local}@${rawDomain}`;
 }
 
 /** Server-side validation for POST /api/waitlist. */

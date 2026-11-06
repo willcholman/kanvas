@@ -21,7 +21,8 @@ export async function POST(req: NextRequest) {
     return json({ status: "invalid", errors: { form: "Invalid request." } }, 400);
   }
 
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "unknown";
+  // Vercel sets x-real-ip to the connecting client; a caller can't choose it.
+  const ip = req.headers.get("x-real-ip")?.trim() || req.headers.get("x-forwarded-for")?.split(",").pop()?.trim() || "unknown";
   if (!rateLimit(ip)) return json({ status: "rate_limited" }, 429);
 
   let body: unknown;
@@ -70,7 +71,8 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     // 23505 = unique_violation on email: already on the list.
-    if (error.code === "23505") return json({ status: "exists" });
+    // Already on the list: answer exactly as for a new signup, so nobody can test who signed up.
+    if (error.code === "23505") return json({ status: "created" }, 201);
     console.error("[waitlist] insert failed", error);
     return json({ status: "error" }, 500);
   }
