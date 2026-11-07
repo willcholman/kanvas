@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/LegalPage";
-import { SITE } from "@/content/site";
+import { PRIVACY, PRIVACY_UPDATED } from "@/content/legal";
 
 export const metadata: Metadata = {
   title: "Privacy",
@@ -9,35 +9,34 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy Policy" updated="October 14, 2026">
-      <section>
-        <h2>What we collect</h2>
-        <p>
-          When you join the waitlist we collect your first and last name, email address, the martial art you train,
-          whether you signed up as an athlete or a coach, and the page and campaign that brought you here.
-        </p>
-      </section>
-      <section>
-        <h2>How we use it</h2>
-        <p>
-          We use your email only to tell you when Kanvas launches. We don&apos;t sell your information, and you can
-          unsubscribe from any email at any time.
-        </p>
-      </section>
-      <section>
-        <h2>Teens</h2>
-        <p>Kanvas is for ages 13 and up, with extra privacy protections for anyone under 18.</p>
-      </section>
-      <section>
-        <h2>Contact</h2>
-        <p>
-          Questions or requests to delete your data:{" "}
-          <a className="underline underline-offset-2" href={`mailto:${SITE.email}`}>
-            {SITE.email}
-          </a>
-          .
-        </p>
-      </section>
+    <LegalPage title="Privacy Policy" updated={PRIVACY_UPDATED}>
+      {PRIVACY.map(([heading, body]) => (
+        <section key={heading}>
+          <h2>{heading}</h2>
+          <p>{linkEmail(body)}</p>
+        </section>
+      ))}
     </LegalPage>
+  );
+}
+
+const EMAIL = "contact@kanvasfit.com";
+
+/** Turns the contact address in a paragraph into a mailto link. */
+function linkEmail(text: string) {
+  const parts = text.split(EMAIL);
+  return parts.flatMap((part, i) =>
+    i === 0
+      ? [part]
+      : [
+          <a
+            key={i}
+            className="underline underline-offset-2"
+            href={`mailto:${EMAIL}`}
+          >
+            {EMAIL}
+          </a>,
+          part,
+        ],
   );
 }
