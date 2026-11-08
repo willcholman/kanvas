@@ -10,7 +10,7 @@ import { Mark } from "@/components/brand/Logo";
 //   Inbox approval: the gym's inbox approves someone as a coach, or says it isn't someone from
 //   the gym. Link confirm: a claimant confirms their own work address.
 const ENDPOINT =
-  process.env.NEXT_PUBLIC_CLAIM_LINK_URL ?? "https://hvdlrmxhojcifmfyzlww.supabase.co/functions/v1/claim-link";
+  process.env.NEXT_PUBLIC_CLAIM_LINK_URL ?? "https://nnuhiclnwvchakkdwrgj.supabase.co/functions/v1/claim-link";
 
 type View = {
   kind: "inbox" | "link";
