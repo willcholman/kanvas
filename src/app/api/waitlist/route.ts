@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
-import { waitlistSchema, type WaitlistResponse } from "@/lib/waitlist";
+import { mailboxKey, waitlistSchema, type WaitlistResponse } from "@/lib/waitlist";
 import { rateLimit } from "@/lib/rate-limit";
 import { confirmationEmail } from "@/lib/email";
 import { SITE } from "@/content/site";
@@ -11,7 +11,18 @@ export const runtime = "nodejs";
 const json = (body: WaitlistResponse, status = 200) => NextResponse.json(body, { status });
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "unknown";
+  // Only the site's own form: same-origin JSON. A page elsewhere can't post from its visitors' browsers.
+  const origin = req.headers.get("origin");
+  let sameOrigin = false;
+  try {
+    sameOrigin = !!origin && new URL(origin).host === req.headers.get("host");
+  } catch {}
+  if (!sameOrigin || !req.headers.get("content-type")?.startsWith("application/json")) {
+    return json({ status: "invalid", errors: { form: "Invalid request." } }, 400);
+  }
+
+  // Vercel sets x-real-ip to the connecting client; a caller can't choose it.
+  const ip = req.headers.get("x-real-ip")?.trim() || req.headers.get("x-forwarded-for")?.split(",").pop()?.trim() || "unknown";
   if (!rateLimit(ip)) return json({ status: "rate_limited" }, 429);
 
   let body: unknown;
@@ -31,6 +42,8 @@ export async function POST(req: NextRequest) {
     return json({ status: "invalid", errors }, 400);
   }
   const v = parsed.data;
+  // One confirmation per mailbox per window, however the address is spelled (+tags).
+  if (!rateLimit(`mailbox:${mailboxKey(v.email)}`)) return json({ status: "rate_limited" }, 429);
 
   // Honeypot filled: pretend it worked so bots learn nothing.
   if (v.company) return json({ status: "created" });
@@ -58,7 +71,8 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     // 23505 = unique_violation on email: already on the list.
-    if (error.code === "23505") return json({ status: "exists" });
+    // Already on the list: answer exactly as for a new signup, so nobody can test who signed up.
+    if (error.code === "23505") return json({ status: "created" }, 201);
     console.error("[waitlist] insert failed", error);
     return json({ status: "error" }, 500);
   }

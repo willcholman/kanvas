@@ -3,11 +3,24 @@ import { DISCIPLINES } from "@/content/site";
 
 export const DISCIPLINE_OPTIONS = [...DISCIPLINES, "Other"] as const;
 
+// Names go into the confirmation email, so only letters, spaces, apostrophes, hyphens and a period
+// that ends an initial ("J. R."): nobody can turn the greeting into a message or a domain.
+const NAME = /^\p{L}[\p{L}\p{M}' -]*(?:\.(?=\s|$)[\p{L}\p{M}' -]*)*$/u;
+const NAME_OR_EMPTY = new RegExp(`^(?:${NAME.source.slice(1, -1)})?$`, "u");
+
+/** One mailbox, however it's spelled: lower case, without a +tag, and for Gmail without dots. */
+export function mailboxKey(email: string) {
+  const [rawLocal, rawDomain] = email.toLowerCase().split("@");
+  const gmail = rawDomain === "gmail.com" || rawDomain === "googlemail.com";
+  const local = rawLocal.split("+")[0];
+  return gmail ? `${local.replaceAll(".", "")}@gmail.com` : `${local}@${rawDomain}`;
+}
+
 /** Server-side validation for POST /api/waitlist. */
 export const waitlistSchema = z
   .object({
-    firstName: z.string().trim().min(1, "Enter your first name.").max(80),
-    lastName: z.string().trim().max(80).optional().default(""),
+    firstName: z.string().trim().min(1, "Enter your first name.").max(40).regex(NAME, "Use letters only."),
+    lastName: z.string().trim().max(40).regex(NAME_OR_EMPTY, "Use letters only.").optional().default(""),
     email: z.string().trim().toLowerCase().max(254).pipe(z.email("Enter a valid email address.")),
     discipline: z.enum(DISCIPLINE_OPTIONS, { message: "Choose your martial art." }),
     disciplineOther: z.string().trim().max(80).optional().default(""),
