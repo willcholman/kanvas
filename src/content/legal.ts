@@ -10,7 +10,7 @@ export const PRIVACY: LegalSection[] = [
   ],
   [
     "What you give us",
-    "Your email address and name when you sign in with an email code, Apple or Google (if you hide your email with Apple, we only get Apple's relay address). Anything you add to your profile: photo, banner, location text, sports, gym and bio. The sessions you log: sport, time, duration, notes, photos, gym and the partners you tag. Your likes, comments, follows, blocks, reports, and gym and group memberships. If you claim or add a gym, the details and proof you send us, such as a work email, website or photo of a document.",
+    "Your email address and name when you sign in with an email code, Apple or Google (if you hide your email with Apple, we only get Apple's relay address). Anything you add to your profile: photo, banner, location text, arts, gym and bio. The sessions you log: art, time, duration, rounds, notes, photos, gym and the partners you tag. Your likes, comments, follows, blocks, reports, and gym and group memberships. If you claim or add a gym, the details and proof you send us, such as a work email, website or photo of a document.",
   ],
   [
     "What the app collects",
