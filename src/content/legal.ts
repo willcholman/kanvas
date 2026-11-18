@@ -2,7 +2,7 @@
 // the app say the same thing. Edit the app first, then copy here. The waitlist section is website only.
 export type LegalSection = readonly [heading: string, body: string];
 
-export const PRIVACY_UPDATED = "November 6, 2026";
+export const PRIVACY_UPDATED = "November 17, 2026";
 export const PRIVACY: LegalSection[] = [
   [
     "Who we are",
@@ -10,7 +10,7 @@ export const PRIVACY: LegalSection[] = [
   ],
   [
     "What you give us",
-    "Your email address and name when you sign in with an email code, Apple or Google (if you hide your email with Apple, we only get Apple's relay address). Anything you add to your profile: photo, banner, location text, arts, gym and bio. The sessions you log: art, time, duration, rounds, notes, photos, gym and the partners you tag. Your likes, comments, follows, blocks, reports, and gym and group memberships. If you claim or add a gym, the details and proof you send us, such as a work email, website or photo of a document.",
+    "Your email address and name when you sign in with an email code, Apple or Google (if you hide your email with Apple, we only get Apple's relay address). Your age group from the age question (not your date of birth). Anything you add to your profile: photo, banner, location text, arts, gym and bio. The sessions you log: art, time, duration, rounds, notes, photos, gym and the partners you tag. Your likes, comments, follows, blocks, reports, and gym and group memberships. If you claim or add a gym, the details and proof you send us, such as a work email, website or photo of a document.",
   ],
   [
     "What the app collects",
@@ -50,7 +50,7 @@ export const PRIVACY: LegalSection[] = [
   ],
   [
     "Children",
-    "Kanvas is for people 13 and older. We do not knowingly collect data from children under 13; if you believe a child has an account, tell us and we will delete it.",
+    "Kanvas is for people 16 and older. When you sign up we ask for your date of birth and keep only your age group (16 to 17, or 18 and older), never the date. If you are under 16, we delete the account straight away. We do not knowingly keep data about anyone under 16; if you believe someone under 16 has an account, tell us and we will delete it.",
   ],
   [
     "The waitlist",
@@ -62,11 +62,11 @@ export const PRIVACY: LegalSection[] = [
   ],
 ];
 
-export const TERMS_UPDATED = "November 6, 2026";
+export const TERMS_UPDATED = "November 17, 2026";
 export const TERMS: LegalSection[] = [
   [
     "Using Kanvas",
-    "By creating an account or using Kanvas you agree to these terms and our privacy policy. You must be at least 13 years old to use Kanvas.",
+    "By creating an account or using Kanvas you agree to these terms and our privacy policy. You must be at least 16 years old to use Kanvas.",
   ],
   [
     "Your account",
