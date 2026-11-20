@@ -2,51 +2,63 @@
 // the app say the same thing. Edit the app first, then copy here. The waitlist section is website only.
 export type LegalSection = readonly [heading: string, body: string];
 
-export const PRIVACY_UPDATED = "November 17, 2026";
+export const PRIVACY_UPDATED = "November 20, 2026";
 export const PRIVACY: LegalSection[] = [
   [
     "Who we are",
-    "Kanvas is a training log and community for martial artists. This policy explains what we collect in the Kanvas app, why, and the choices you have. Questions or requests: contact@kanvasfit.com.",
+    "Kanvas is a training log and community for martial artists, run from South Carolina in the United States. This policy explains what we collect in the Kanvas app and on kanvasfit.com, why, who sees it, and the choices you have. Questions or requests: contact@kanvasfit.com.",
   ],
   [
     "What you give us",
-    "Your email address and name when you sign in with an email code, Apple or Google (if you hide your email with Apple, we only get Apple's relay address). Your age group from the age question (not your date of birth). Anything you add to your profile: photo, banner, location text, arts, gym and bio. The sessions you log: art, time, duration, rounds, notes, photos, gym and the partners you tag. Your likes, comments, follows, blocks, reports, and gym and group memberships. If you claim or add a gym, the details and proof you send us, such as a work email, website or photo of a document.",
+    "Your email address and name when you sign in with an email code, Apple or Google (if you hide your email with Apple, we only get Apple's relay address). Your age group from the age question, never your date of birth. Anything you add to your profile: photo, banner, location text, arts, gym and bio. The sessions you log: art, time, duration, rounds, notes, photos, gym, the partners you tag and who can view it. Your likes, comments, follows, blocks, reports, and gym and group memberships. If you claim or add a gym, the details and proof you send us, such as a work email, website or photo of a document.",
   ],
   [
     "What the app collects",
-    "If you turn on notifications, a push token for your device so we can deliver them. If the app crashes or hits an error, a crash report with your device model, system version, app version and what the app was doing. Crash reports never include your name, email, photos or IP address. We do not use advertising identifiers, third-party ads or tracking across other apps and websites.",
+    "If you turn on notifications, a push token for your device so we can deliver them. If the app crashes or hits an error, a crash report with your device model, system version, app version and what the app was doing. Our crash reporting service works out an approximate country from the connection and then discards the IP address; crash reports never include your name, email or photos. We don't use advertising identifiers, show third-party ads, or track you across other apps and websites.",
   ],
   [
     "Photos and camera",
-    "We only open your camera or photo library when you choose to add a photo, and we only upload the photos you pick. Share images are saved to your photos only when you ask.",
+    "We only open your camera or photo library when you choose to add a photo, and we only upload the photos you pick, resized and re-saved on your phone first. We don't read or use location data from your photos. Share images are saved to your photos only when you ask.",
   ],
   [
     "Location",
-    "We don't collect your device's location. Gym listings show public business addresses, and your profile shows the location text you choose to enter.",
+    "We don't collect your device's location. Your profile shows the location text you choose to enter, and gym listings show public business addresses.",
+  ],
+  [
+    "Health information",
+    "Kanvas is a training log, not a health service. We never ask about injuries, illness, weight or other health details, and we never work them out from your training. If you choose to write such details in a session note or a comment, they are seen by whoever can view that session, and you can edit or delete them at any time. Our Consumer Health Data Privacy Policy explains this in full; it is in the app under Settings and at kanvasfit.com/health-data.",
+  ],
+  [
+    "Gym listings",
+    "Kanvas lists martial arts gyms so you can find them and log where you train. We built the listings from public business information: gyms' own websites, public directories and public social media pages, with map positions from the US Census Bureau's address service. A listing shows the gym's name, address, arts, logo, website and social handle. A gym's email and phone are visible only to its coaches and Kanvas staff unless the coaches choose to show them. Listings that no one has claimed are not run or endorsed by the gym. If a listing is wrong or a gym wants it removed, use \"Fix or remove this listing\" on the gym's page or email contact@kanvasfit.com, and we will correct or remove it within 7 days.",
   ],
   [
     "How we use it",
-    "To run Kanvas: show your feed, profile and stats, connect you with training partners, gyms and groups, send the notifications you choose, check gym ownership claims, and keep the community safe through moderation. We use crash reports only to fix problems. We don't sell your personal data or share it for advertising.",
+    "To run Kanvas: show your feed, profile and stats, connect you with training partners, gyms and groups, send the notifications you choose, check gym ownership claims, and keep the community safe through moderation. We use crash reports only to fix problems. We don't sell your personal data, share it for advertising, or use your content to train AI models.",
   ],
   [
     "Who can see what",
-    "Public profiles and sessions are visible to everyone on Kanvas; a private account shows sessions only to followers you approve. People you block can't see your content. A gym's email and phone are visible only to its coaches and Kanvas staff unless the coaches choose to show them. Kanvas staff can see account details, including your email, to review reports, verify accounts and help with support.",
+    "Each session has a \"Who can view\" setting: Everyone (anyone on Kanvas who can see your profile), Followers, or Only you. A private account limits Everyone to the followers you approve. Sessions set to Only you never appear in anyone else's feed and send no notifications. People you block can't see your content. Kanvas staff can see account details, including your email, to review reports, verify accounts and help with support.",
   ],
   [
     "Service providers",
-    "We use a few companies to run Kanvas, and they handle data only to provide their service to us: Supabase (database, sign-in and file storage, in the United States), Resend (sign-in codes and gym verification emails), Apple and Google (sign-in and push delivery), Expo (push delivery) and Sentry (crash reports). We may also share information if the law requires it.",
+    "We use a few companies to run Kanvas, and they handle data only to provide their service to us: Supabase (database, sign-in and file storage, in the United States), Resend (sign-in codes and gym emails), Apple and Google (sign-in and push delivery), Expo (push delivery), Sentry (crash reports), Vercel (the website) and Zoho (our email inbox). We may also share information if the law requires it, or to protect someone from harm.",
   ],
   [
     "Keeping and deleting data",
-    "We keep your data while your account exists. You can delete sessions, comments and photos at any time, and delete your account in Settings. Deleting your account removes your profile, sessions, photos, comments, likes, follows and notifications. Gyms you manage are released and clubs you run pass to another member. To keep Kanvas safe, reports you made or received stay without your name, and records of staff decisions and gym emails we sent stay without your details. Sign-in code attempts and push receipts are deleted within a day.",
+    "We keep your data while your account exists. You can delete sessions, comments and photos at any time, and delete your account in Settings. Deleting your account removes your profile, sessions, photos, comments, likes, follows and notifications straight away, and if you signed in with Apple, removes Kanvas from your Apple ID. Gyms you manage are released and clubs you run pass to another member. To keep Kanvas safe, reports you made or received stay without your name, and records of staff decisions and gym emails we sent stay without your details. We keep encrypted backups of the database for up to 8 weeks, so deleted data leaves them within that time. Sign-in code attempts and push receipts are deleted within a day.",
   ],
   [
     "Security",
-    "Data is encrypted in transit, access rules limit each record to the people allowed to see it, and your sign-in session is stored encrypted on your device. No system is perfectly secure, so please tell us at contact@kanvasfit.com if you find a problem.",
+    "Data is encrypted in transit and at rest, access rules limit each record to the people allowed to see it, our admin accounts use two-step sign-in, and your sign-in session is stored encrypted on your device. No system is perfectly secure; if something goes wrong we will tell the people affected as the law requires. Please report any problem to contact@kanvasfit.com.",
   ],
   [
     "Your rights",
-    "You can see and change most of your data in the app. You can also ask us for a copy of your data, a correction, or deletion by emailing contact@kanvasfit.com. Depending on where you live, you may have further rights under local law.",
+    "Wherever you live, you can ask us to show you the data we hold about you, give you a copy, correct it, or delete it, and you can withdraw a consent you gave. Most of this you can do in the app; for the rest, email contact@kanvasfit.com from the address on your account. We answer within 45 days. If we say no, reply with the word \"appeal\" and we will look again and explain the result.",
+  ],
+  [
+    "Do Not Track",
+    "Kanvas doesn't track you across other apps or websites, and lets no one else do so, so it treats every visit the same way whether or not your browser sends a Do Not Track signal.",
   ],
   [
     "Children",
@@ -58,7 +70,45 @@ export const PRIVACY: LegalSection[] = [
   ],
   [
     "Changes",
-    "If we change this policy we'll update the date below, and for important changes we'll tell you in the app.",
+    "When we change this policy we update the date below; for important changes we'll also tell you in the app before they apply.",
+  ],
+];
+
+// Consumer Health Data Privacy Policy (Washington RCW 19.373, Nevada SB 370): its own page, linked
+// separately from the homepage footer. Same text as the app's legal/health-data screen.
+export const HEALTH_DATA_UPDATED = "November 20, 2026";
+export const HEALTH_DATA: LegalSection[] = [
+  [
+    "What this covers",
+    "Some state laws, including Washington's My Health My Data Act and Nevada's consumer health data law, give you rights over \"consumer health data\": information about your past, present or future physical or mental health. This policy explains when Kanvas might hold that kind of information and what you can do about it. It adds to our privacy policy, which covers everything else.",
+  ],
+  [
+    "What we collect",
+    "Kanvas is a training log, not a health service. We don't ask for health information, connect to health apps or wearables, measure your body, or work out anything about your health from your training. The only health information Kanvas may hold is what you choose to write yourself, for example an injury or a recovery mentioned in a session note, title or comment. The training you log (the art, time, duration and rounds) is about your activity rather than your health, but we treat it with the same care.",
+  ],
+  [
+    "Why we have it",
+    "Only to show your sessions and comments to you and to the people you choose with each session's \"Who can view\" setting, and to keep them in your training log until you delete them.",
+  ],
+  [
+    "Where it comes from",
+    "Only from you, through what you type in the app.",
+  ],
+  [
+    "Who we share it with",
+    "The people who can view the session under the setting you picked. Our hosting and storage provider, Supabase, stores it for us and uses it for nothing else. We don't sell consumer health data, share it with advertisers or data brokers, use it for advertising, or use it to train AI models.",
+  ],
+  [
+    "Your consent and choices",
+    "Writing a health detail in a note or comment is your choice, and you choose who sees it. You can change who can view a session, edit or delete a note or comment, delete a session, or delete your account at any time, and the detail is gone from Kanvas straight away (and from our backups within 8 weeks).",
+  ],
+  [
+    "Your rights",
+    "You can ask to see the consumer health data we hold about you and the companies we share it with, ask us to delete it, and withdraw your consent. Email contact@kanvasfit.com from the address on your account, or do it yourself in the app. We answer within 45 days. If we say no, reply with the word \"appeal\" and we will look again and explain the result.",
+  ],
+  [
+    "Contact",
+    "Kanvas, South Carolina, United States. contact@kanvasfit.com.",
   ],
 ];
 

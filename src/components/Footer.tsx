@@ -4,7 +4,10 @@ import { Wordmark, WordmarkTm } from "./brand/Logo";
 
 const LEGAL = [
   { href: "/privacy", label: "Privacy" },
+  // Washington's My Health My Data Act asks for its own link, separate from the privacy policy.
+  { href: "/health-data", label: "Consumer health data" },
   { href: "/terms", label: "Terms" },
+  { href: "/gym-listing", label: "Fix or remove a gym listing" },
 ];
 
 const SOCIALS = [
